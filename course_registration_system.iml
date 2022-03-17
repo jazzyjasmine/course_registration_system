@@ -16,5 +16,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="mongodb.driver" level="project" />
+    <orderEntry type="library" exported="" name="mongodb.driver.sync" level="project" />
   </component>
 </module>

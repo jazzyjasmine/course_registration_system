@@ -1,3 +1,6 @@
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 public class Course {
     public String course_id;
     public String course_name;
@@ -12,6 +15,7 @@ public class Course {
     public int quarter;
     public int grade_type;
     public String description;
+    public int registered_num;
 
     public Course(String course_id,
                   String course_name,
@@ -39,5 +43,18 @@ public class Course {
         this.quarter = quarter;
         this.grade_type = grade_type;
         this.description = description;
+    }
+
+    public void getRegisteredNum() {
+        try {
+            Statement statement = MySQLConnect.getInstance().dbConnection.createStatement();
+            ResultSet resultSet = statement.executeQuery("select count(student_id) as num from student_course_relation where course_id = " + course_id);
+
+            while (resultSet.next()) {
+                registered_num = resultSet.getInt("num");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,15 +1,18 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Regie {
-    private final MongoDBConnect mongodbConnect;
-    private final MySQLConnect mysqlConnect;
-    private Map<Integer, Person> uid_to_person;
-    private ArrayList<Student> students;
-    private ArrayList<Instructor> instructors;
-    private ArrayList<Administrator> administrators;
-    private ArrayList<Course> courses;
+    public final MongoDBConnect mongodbConnect;
+    public final MySQLConnect mysqlConnect;
+    public Map<Integer, Person> uid_to_person = new HashMap<>();
+    public Map<String, Course> cid_to_course = new HashMap<>();
+    public ArrayList<Student> students = new ArrayList<>();
+    public ArrayList<Student> tas = new ArrayList<>();
+    public ArrayList<Instructor> instructors = new ArrayList<>();
+    public ArrayList<Administrator> administrators = new ArrayList<>();
+    public ArrayList<Course> courses = new ArrayList<>();
 
     public Regie() {
         mongodbConnect = MongoDBConnect.getInstance();
@@ -17,11 +20,27 @@ public class Regie {
         reset();
     }
 
+    public static Regie instance = new Regie();
+
+    public static Regie getInstance() {
+        return instance;
+    }
+
     public void reset() {
         try {
+
+            uid_to_person = new HashMap<>();
+            cid_to_course = new HashMap<>();
+            students = new ArrayList<>();
+            tas = new ArrayList<>();
+            instructors = new ArrayList<>();
+            administrators = new ArrayList<>();
+            courses = new ArrayList<>();
+
             // get all students
             Statement statement = mysqlConnect.dbConnection.createStatement();
             ResultSet resultSetStudent = statement.executeQuery("select people_students.id as id, firstname, lastname, email, division, student_type, major, graduation_date from (select * from people where role = 1) people_students left join student on people_students.id = student.id");
+//            System.out.println(resultSetStudent);
             while (resultSetStudent.next()) {
                 Student curr = new Student(
                         resultSetStudent.getString("id"),
@@ -35,6 +54,24 @@ public class Regie {
                 );
                 uid_to_person.put(resultSetStudent.getInt("id"), curr);
                 students.add(curr);
+            }
+
+
+            // get all TAs
+            ResultSet resultSetTA = statement.executeQuery("select ta_students.id as id, firstname, lastname, email, division, student_type, major, graduation_date from (select * from people where role = 3) ta_students left join student on ta_students.id = student.id");
+            while (resultSetTA.next()) {
+                TA curr = new TA(
+                        resultSetTA.getString("id"),
+                        resultSetTA.getString("firstname"),
+                        resultSetTA.getString("lastname"),
+                        resultSetTA.getString("email"),
+                        resultSetTA.getString("division"),
+                        resultSetTA.getInt("student_type"),
+                        resultSetTA.getString("major"),
+                        resultSetTA.getString("graduation_date")
+                );
+                uid_to_person.put(resultSetTA.getInt("id"), curr);
+                tas.add(curr);
             }
 
             // get all instructors
@@ -83,6 +120,7 @@ public class Regie {
                         resultSetCourse.getInt("grade_type"),
                         resultSetCourse.getString("description")
                 );
+                cid_to_course.put(resultSetCourse.getString("course_id"), curr);
                 courses.add(curr);
             }
 
@@ -104,5 +142,10 @@ public class Regie {
 
         return uid_to_person.get(uid);
     }
+
+//    public static void main(String[] args) {
+//        Regie regie = Regie.getInstance();
+//        System.out.println(regie.cid_to_course);
+//    }
 
 }

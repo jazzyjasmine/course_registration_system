@@ -1,5 +1,5 @@
 public abstract class Person {
-    public MySQLConnect mysqlConnect;
+
     public String id;
     public String firstName;
     public String lastName;
@@ -8,7 +8,7 @@ public abstract class Person {
     public int role;
 
     public Person(String id, String firstName, String lastName, String email, String division, int role) {
-        mysqlConnect = MySQLConnect.getInstance();
+
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

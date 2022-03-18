@@ -1,13 +1,24 @@
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MySQLConnect {
-    private Connection dbConnection;
+    /* Singleton Pattern */
+    private static final MySQLConnect instance = new MySQLConnect();
+
+    public Connection dbConnection;
+
     public MySQLConnect() {
         try {
-            this.dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");
+            dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/regie", "root", "rootps123");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static MySQLConnect getInstance() {
+        return instance;
     }
 
     public static void main(String[] args) {

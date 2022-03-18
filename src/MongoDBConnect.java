@@ -4,11 +4,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MongoDBConnect {
+    /* Singleton Pattern */
+    private static final MongoDBConnect instance = new MongoDBConnect();
+
     public MongoCollection<Document> collection;
+
     public MongoDBConnect() {
-        MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/regie");
-        MongoDatabase database = client.getDatabase("regie");
-        collection = database.getCollection("account");
+        try {
+            MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/regie");
+            MongoDatabase database = client.getDatabase("regie");
+            collection = database.getCollection("account");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static MongoDBConnect getInstance() {
+        return instance;
     }
 
     public Map<Integer, String> getAccounts() {
@@ -38,8 +50,8 @@ public class MongoDBConnect {
     }
 
 //    public static void main(String[] args) {
-//        MongoDBConnect test = new MongoDBConnect();
-//        test.insertAccount(4, "administratorfortest");
+//        MongoDBConnect test = MongoDBConnect.getInstance();
+//        test.insertAccount(5, "administratorfortest");
 //        System.out.println(test.getAccounts());
 //    }
 

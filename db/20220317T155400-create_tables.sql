@@ -1,4 +1,4 @@
--- sudo mysql -u root -p < 20220317T155400-create_tables.sql
+-- sudo mysql -u root -p < ./db/20220317T155400-create_tables.sql
 
 use regie;
 
@@ -25,28 +25,19 @@ CREATE TABLE student
 DROP TABLE IF EXISTS course;
 CREATE TABLE course
 (
-    course_id   INT PRIMARY KEY,
-    course_name VARCHAR(30) NOT NULL,
-    division    VARCHAR(30) NOT NULL,
-    year        CHAR(4)     NOT NULL,
-    quarter     INT         NOT NULL, -- 1: winter, 2: spring, 3: summer, 4: fall
-    grade_type  INT         NOT NULL, -- 1: P/F, 2: A/B/C/D/F
-    description TEXT
-);
-
--- one course can have multiple sessions
--- E.g. Course 157 has session 1, 2, 3, 4, Course 158 has session 1, 2
-DROP TABLE IF EXISTS session;
-CREATE TABLE session
-(
-    session_id    INT NOT NULL,
-    course_id     INT NOT NULL,
-    instructor_id INT         NOT NULL, -- each session only has one instructor
+    course_id     INT PRIMARY KEY,
+    course_name   VARCHAR(30) NOT NULL,
+    instructor_id INT         NOT NULL,
     capacity      INT         NOT NULL,
     address       VARCHAR(50) NOT NULL,
     weekday       INT         NOT NULL, -- 1: Mon, 2: Tue, 3: Wed, 4: Thu, 5: Fri, 6: Sat, 7: Sun
     start_time    TIME        NOT NULL,
-    end_time      TIME        NOT NULL
+    end_time      TIME        NOT NULL,
+    division      VARCHAR(30) NOT NULL,
+    year          CHAR(4)     NOT NULL,
+    quarter       INT         NOT NULL, -- 1: winter, 2: spring, 3: summer, 4: fall
+    grade_type    INT         NOT NULL, -- 1: P/F, 2: A/B/C/D/F
+    description   TEXT
 );
 
 -- student:course many-to-many
@@ -54,7 +45,6 @@ DROP TABLE IF EXISTS student_course_relation;
 CREATE TABLE student_course_relation
 (
     course_id  INT NOT NULL,
-    session_id INT NOT NULL,
     student_id INT NOT NULL
 );
 
@@ -63,7 +53,6 @@ DROP TABLE IF EXISTS ta_course_relation;
 CREATE TABLE ta_course_relation
 (
     course_id INT NOT NULL,
-    session_id INT NOT NULL,
     ta_id     INT NOT NULL
 );
 

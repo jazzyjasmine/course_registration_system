@@ -1,7 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MySQLConnect {
     /* Singleton Pattern */
@@ -9,7 +6,7 @@ public class MySQLConnect {
 
     public Connection dbConnection;
 
-    public MySQLConnect() {
+    private MySQLConnect() {
         try {
             dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/regie", "root", "rootps123");
         } catch (Exception e) {
@@ -21,17 +18,17 @@ public class MySQLConnect {
         return instance;
     }
 
-    public static void main(String[] args) {
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("select * from user");
-
-            while (resultSet.next()) {
-                System.out.println(resultSet.getString("User"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public static void main(String[] args) {
+//        try {
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");
+//            Statement statement = connection.createStatement();
+//            ResultSet resultSet = statement.executeQuery("select * from user");
+//
+//            while (resultSet.next()) {
+//                System.out.println(resultSet.getString("User"));
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

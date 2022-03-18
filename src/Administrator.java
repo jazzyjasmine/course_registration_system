@@ -4,8 +4,8 @@ import java.sql.*;
 public class Administrator extends Person {
     private final MongoDBConnect mongodbConnect;
 
-    private Administrator() {
-        super();
+    public Administrator(String id, String firstName, String lastName, String email, String division) {
+        super(id, firstName, lastName, email, division, 4);
         mongodbConnect = MongoDBConnect.getInstance();
     }
 

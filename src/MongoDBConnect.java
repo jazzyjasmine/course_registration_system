@@ -9,7 +9,7 @@ public class MongoDBConnect {
 
     public MongoCollection<Document> collection;
 
-    public MongoDBConnect() {
+    private MongoDBConnect() {
         try {
             MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/regie");
             MongoDatabase database = client.getDatabase("regie");

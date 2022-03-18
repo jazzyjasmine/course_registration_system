@@ -5,7 +5,7 @@ use regie;
 DROP TABLE IF EXISTS people;
 CREATE TABLE people
 (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
+    id        INT PRIMARY KEY,
     firstname VARCHAR(30) NOT NULL,
     lastname  VARCHAR(30) NOT NULL,
     email     VARCHAR(30) NOT NULL,
@@ -44,16 +44,16 @@ CREATE TABLE course
 DROP TABLE IF EXISTS student_course_relation;
 CREATE TABLE student_course_relation
 (
-    course_id  INT NOT NULL,
-    student_id INT NOT NULL
+    student_id INT NOT NULL,
+    course_id  INT NOT NULL
 );
 
 -- ta:course many-to-many
 DROP TABLE IF EXISTS ta_course_relation;
 CREATE TABLE ta_course_relation
 (
-    course_id INT NOT NULL,
-    ta_id     INT NOT NULL
+    ta_id     INT NOT NULL,
+    course_id INT NOT NULL
 );
 
 -- primary key (course_id, student_id)

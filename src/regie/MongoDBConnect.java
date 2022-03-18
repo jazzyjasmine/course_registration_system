@@ -16,6 +16,7 @@ public class MongoDBConnect {
             MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/regie");
             MongoDatabase database = client.getDatabase("regie");
             collection = database.getCollection("account");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

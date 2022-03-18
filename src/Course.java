@@ -43,10 +43,13 @@ public class Course {
         this.quarter = quarter;
         this.grade_type = grade_type;
         this.description = description;
+        getRegisteredNum();
     }
 
     public void getRegisteredNum() {
         try {
+            registered_num = 0;
+
             Statement statement = MySQLConnect.getInstance().dbConnection.createStatement();
             ResultSet resultSet = statement.executeQuery("select count(student_id) as num from student_course_relation where course_id = " + course_id);
 

@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Regie {
     public final MongoDBConnect mongodbConnect;
@@ -136,16 +137,16 @@ public class Regie {
             throw new Exception("Uid not exists!");
         }
 
-        if (account_to_password.get(uid) != password) {
+        if (!Objects.equals(account_to_password.get(uid), password)) {
             throw new Exception("Wrong password!");
         }
 
         return uid_to_person.get(uid);
     }
 
-//    public static void main(String[] args) {
+//    public static void main(String[] args) throws Exception {
 //        Regie regie = Regie.getInstance();
-//        System.out.println(regie.cid_to_course);
+//        System.out.println(regie.getPerson(1, "rootpassword"));
 //    }
 
 }

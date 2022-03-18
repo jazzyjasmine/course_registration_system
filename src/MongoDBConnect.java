@@ -1,41 +1,46 @@
 import com.mongodb.client.*;
-import org.bson.BsonDocument;
-import org.bson.BsonInt64;
 import org.bson.Document;
-import org.bson.conversions.Bson;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoException;
-
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MongoDBConnect {
-    public static void main(String[] args) {
-        MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/mycustomers");
+    public MongoCollection<Document> collection;
+    public MongoDBConnect() {
+        MongoClient client = MongoClients.create("mongodb://root:rootps123@localhost:27017/regie");
+        MongoDatabase database = client.getDatabase("regie");
+        collection = database.getCollection("account");
+    }
 
-        MongoDatabase database = client.getDatabase("mycustomers");
-
-        MongoCollection<Document> collection = database.getCollection("customer");
-
+    public Map<Integer, String> getAccounts() {
+        Map<Integer, String> account_to_password = new HashMap<>();
         try (MongoCursor<Document> cur = collection.find().iterator()) {
-
             while (cur.hasNext()) {
-
-                var doc = cur.next();
-                System.out.println(doc);
-                System.out.println(doc.keySet());
-                var cars = new ArrayList<>(doc.values());
-
-                System.out.printf("%s: %s%n", cars.get(1), cars.get(2));
+                Document doc = cur.next();
+                account_to_password.put(Integer.parseInt(doc.get("uid").toString()), doc.get("password").toString());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-//        database.createCollection("customer_tester1s");
-
-//        for (String collectionName : database.listCollectionNames()) {
-//            System.out.println(collectionName);
-//        }
-
-        // Prints out the document.
-
+        return account_to_password;
     }
+
+    public void insertAccount(int uid, String password) {
+        try {
+            Document document = new Document();
+            document.append("uid", Integer.toString(uid));
+            document.append("password", password);
+
+            collection.insertOne(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    public static void main(String[] args) {
+//        MongoDBConnect test = new MongoDBConnect();
+//        test.insertAccount(4, "administratorfortest");
+//        System.out.println(test.getAccounts());
+//    }
+
 }

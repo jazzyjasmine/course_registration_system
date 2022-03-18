@@ -1,6 +1,15 @@
 import java.sql.*;
 
 public class MySQLConnect {
+    private Connection dbConnection;
+    public MySQLConnect() {
+        try {
+            this.dbConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         try {
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");

@@ -15,11 +15,4 @@ public class Administrator extends Person {
     }
 
 
-
-//    public static void main(String[] args) {
-//        Administrator test = new Administrator();
-//        test.addPeopleOnly("10", "Jasmine", "Ma", "zh@gmail.com", "PSD", "4");
-//    }
-
-
 }

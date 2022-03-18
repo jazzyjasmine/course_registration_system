@@ -1,6 +1,9 @@
 package regie;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MySQLConnect {
     /* Singleton Pattern */
@@ -133,7 +136,7 @@ public class MySQLConnect {
     }
 
     public void dropStudentCourseRelation(String student_id,
-                                         String course_id) {
+                                          String course_id) {
         try {
 
             String sql = "DELETE FROM student_course_relation " +
@@ -167,17 +170,63 @@ public class MySQLConnect {
         }
     }
 
-//    public static void main(String[] args) {
-//        try {
-//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql", "root", "rootps123");
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("select * from user");
-//
-//            while (resultSet.next()) {
-//                System.out.println(resultSet.getString("User"));
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public void addGrade(String student_id,
+                         String course_id,
+                         char grade) {
+        try {
+            String sql = "INSERT INTO grade " +
+                    "VALUES (?, ?, ?)";
+
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, course_id);
+            preparedStatement.setString(2, student_id);
+            preparedStatement.setString(3, String.valueOf(grade));
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dropGrade(String student_id,
+                         String course_id) {
+        try {
+            String sql = "DELETE FROM grade WHERE " +
+                    "student_id = ? AND course_id = ?";
+
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, student_id);
+            preparedStatement.setString(2, course_id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Map<String, String> getGradesByCourseId(String course_id) throws SQLException {
+        Map<String, String> res = new HashMap<>();
+        MySQLConnect mysqlConnect = MySQLConnect.getInstance();
+        Statement statement = mysqlConnect.dbConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select student_id, grade from grade where course_id = " + course_id);
+        while (resultSet.next()) {
+            res.put(resultSet.getString("student_id"), resultSet.getString("grade"));
+        }
+        return res;
+    }
+
+    public ArrayList<String> getCoursesbyTAId(String TA_id) throws SQLException {
+        ArrayList<String> course_ids = new ArrayList<>();
+        MySQLConnect mysqlConnect = MySQLConnect.getInstance();
+        Statement statement = mysqlConnect.dbConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select course_id from ta_course_relation where ta_id = " + TA_id);
+        while (resultSet.next()) {
+            course_ids.add(resultSet.getString("course_id"));
+        }
+        return course_ids;
+    }
+
+
 }

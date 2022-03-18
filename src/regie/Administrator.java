@@ -1,5 +1,4 @@
-import java.util.Map;
-import java.sql.*;
+package regie;
 
 public class Administrator extends Person {
     private final MongoDBConnect mongodbConnect;

@@ -1,3 +1,5 @@
+package regie;
+
 public abstract class Person {
 
     public String id;

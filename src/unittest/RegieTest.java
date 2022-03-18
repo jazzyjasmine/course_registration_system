@@ -1,4 +1,5 @@
-import static org.junit.Assert.assertTrue;
+package unittest;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -6,6 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import regie.*;
+
 
 class RegieTest {
     Regie regie;
@@ -22,10 +26,6 @@ class RegieTest {
         assertEquals("Ruby Programming", regie.cid_to_course.get("3").course_name);
         assertEquals("Gravity", regie.cid_to_course.get("4").course_name);
         assertEquals("Introduction to Physics", regie.courses.get(0).course_name);
-        assertEquals(2, regie.cid_to_course.get("2").registered_num);
-        assertEquals(3, regie.cid_to_course.get("1").registered_num);
-        assertEquals(1, regie.cid_to_course.get("3").registered_num);
-        assertEquals(1, regie.cid_to_course.get("4").registered_num);
     }
 
     @Test
@@ -89,8 +89,5 @@ class RegieTest {
         Instructor scarlet = (Instructor) regie.getPerson(3, "scarletpassword");
         assertEquals(scarlet, regie.uid_to_person.get(3));
     }
-
-
-
 
 }

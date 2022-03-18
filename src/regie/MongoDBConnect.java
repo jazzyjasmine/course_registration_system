@@ -1,3 +1,5 @@
+package regie;
+
 import com.mongodb.client.*;
 import org.bson.Document;
 import java.util.HashMap;

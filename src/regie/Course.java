@@ -1,5 +1,9 @@
+package regie;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Course {
     public String course_id;
@@ -59,5 +63,47 @@ public class Course {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Map<String, String> displayCourse() {
+        Map<String, String> res = new HashMap<>();
+        Regie regie = Regie.getInstance();
+        res.put("course_id", course_id);
+        res.put("course_name", course_name);
+        Person instructor = regie.uid_to_person.get(Integer.parseInt(instructor_id));
+        res.put("instructor", instructor.firstName + " " + instructor.lastName);
+        res.put("registered count", Integer.toString(registered_num));
+        res.put("capacity", Integer.toString(capacity));
+        res.put("address", address);
+        String weekdayString = switch (weekday) {
+            case 1 -> "Monday";
+            case 2 -> "Tuesday";
+            case 3 -> "Wednesday";
+            case 4 -> "Thursday";
+            case 5 -> "Friday";
+            case 6 -> "Saturday";
+            case 7 -> "Sunday";
+            default -> "";
+        };
+        res.put("weekday", weekdayString);
+        res.put("time", start_time + "~" + end_time);
+        res.put("division", division);
+        String quarterString = switch (quarter) {
+            case 1 -> "Winter";
+            case 2 -> "Spring";
+            case 3 -> "Summer";
+            case 4 -> "Fall";
+            default -> "";
+        };
+        res.put("quarter", year + " " + quarterString);
+        String gradetypeString = "";
+        if (grade_type == 1) {
+            gradetypeString = "P/F";
+        } else {
+            gradetypeString = "A/B/C/D/F";
+        }
+        res.put("grade type", gradetypeString);
+        res.put("description", description);
+        return res;
     }
 }

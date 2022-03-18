@@ -1,3 +1,5 @@
+package regie;
+
 import java.sql.*;
 
 public class MySQLConnect {
@@ -118,6 +120,24 @@ public class MySQLConnect {
 
             String sql = "INSERT INTO student_course_relation " +
                     "VALUES (?, ?)";
+
+            PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
+            preparedStatement.setString(1, student_id);
+            preparedStatement.setString(2, course_id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dropStudentCourseRelation(String student_id,
+                                         String course_id) {
+        try {
+
+            String sql = "DELETE FROM student_course_relation " +
+                    "WHERE student_id = ? AND course_id = ?";
 
             PreparedStatement preparedStatement = dbConnection.prepareStatement(sql);
             preparedStatement.setString(1, student_id);

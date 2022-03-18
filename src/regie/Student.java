@@ -1,6 +1,9 @@
+package regie;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Student extends Person {
     public int student_type;
@@ -14,6 +17,20 @@ public class Student extends Person {
         this.major = major;
         this.graduation_date = graduation_date;
         this.course_limit = student_type == 1 ? 3 : 2;
+    }
+
+    public ArrayList<Map<String, String>> searchAllCourses() {
+        Regie regie = Regie.getInstance();
+        ArrayList<Map<String, String>> res = new ArrayList<>();
+        for (Course c : regie.courses) {
+            res.add(c.displayCourse());
+        }
+        return res;
+    }
+
+    public Map<String, String> searchCourseById(String course_id) {
+        Regie regie = Regie.getInstance();
+        return regie.cid_to_course.get(course_id).displayCourse();
     }
 
     public ArrayList<Course> getRegisteredCourses() {
@@ -52,9 +69,7 @@ public class Student extends Person {
         MySQLConnect connect = MySQLConnect.getInstance();
         connect.addStudentCourseRelation(id, course_id);
 
-        targetCourse.registered_num += 1;
-
-        System.out.println("Registered successfully!");
+        targetCourse.getRegisteredNum();
     }
 
     public void dropCourse(String course_id) throws Exception {
@@ -62,6 +77,12 @@ public class Student extends Person {
         if (!regie.cid_to_course.containsKey(course_id)) {
             throw new Exception("Invalid course id!");
         }
+
+        Course targetCourse = regie.cid_to_course.get(course_id);
+        MySQLConnect connect = MySQLConnect.getInstance();
+        connect.dropStudentCourseRelation(id, course_id);
+
+        targetCourse.getRegisteredNum();
     }
 
 }

@@ -1,3 +1,5 @@
+package regie;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +43,6 @@ public class Regie {
             // get all students
             Statement statement = mysqlConnect.dbConnection.createStatement();
             ResultSet resultSetStudent = statement.executeQuery("select people_students.id as id, firstname, lastname, email, division, student_type, major, graduation_date from (select * from people where role = 1) people_students left join student on people_students.id = student.id");
-//            System.out.println(resultSetStudent);
             while (resultSetStudent.next()) {
                 Student curr = new Student(
                         resultSetStudent.getString("id"),
@@ -146,7 +147,8 @@ public class Regie {
 
 //    public static void main(String[] args) throws Exception {
 //        Regie regie = Regie.getInstance();
-//        System.out.println(regie.getPerson(1, "rootpassword"));
+//        Student a = (Student) regie.uid_to_person.get(4);
+//        System.out.println(a.searchCourseById("3"));
 //    }
 
 }
